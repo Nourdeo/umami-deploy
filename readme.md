@@ -155,7 +155,7 @@ place the following code in the \<head\>...\</head\> section of your HTML
 `sudo vi /etc/nginx/conf.d/umami.conf`
 
 *Add the following:*
-`
+<pre>
 server {
 
 listen 80;
@@ -175,7 +175,8 @@ proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
 }
 
 }
-`
+</pre>
+   
 If we have a list of whitelisted IP addresses that should have access to the server, it is recommended to restrict access by adding the following configuration to Nginx:
 `
 server {
