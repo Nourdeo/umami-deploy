@@ -213,11 +213,11 @@ deny all;
 
 Open the port 80 on firewalld:
 
-`firewall-cmd --add-port=80/tcp –permanent`
+`firewall-cmd --add-port=80/tcp --permanent`
 
 *Reload the firewall to apply the changes by running the following command:*
 
-`firewall-cmd –reload`
+`firewall-cmd --reload`
 
 Now, when you visit "http://umami.kalvad.com" in a web browser, Nginx will forward the connection to the container running on port 8080.
 
@@ -241,11 +241,11 @@ Test your configuration by visiting https://umami.kalvad.com in your web browser
 
 Open the port 8080 on firewalld:
 
-`firewall-cmd --add-port=443/tcp –permanent`
+`firewall-cmd --add-port=443/tcp --permanent`
 
 Reload the firewall to apply the changes by running the following command:
 
-`firewall-cmd –reload`
+`firewall-cmd --reload`
 
 **backup the database:**
 
