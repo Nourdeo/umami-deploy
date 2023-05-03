@@ -16,7 +16,6 @@ metadata:
   name: umami
   namespace: umami
 spec:
-  type:nodePort
   ports:
   - port: 3000
   selector:
