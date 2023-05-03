@@ -3,7 +3,7 @@
 **Prerequisite**
 
 -   Access to the server with root privilege.
--   Because we will monitor one website, we using centos 7 on VM with the following specs:
+   Because we will monitor one website, we using centos 7 on VM with the following specs:
 -   CPU: 2 vCPU
 -   RAM: 4 GB
 -   Storage: 10 GB
@@ -15,7 +15,7 @@
 
     *Update the packages:*
 
-sudo yum update
+`sudo yum update`
 
 *install the dependency:*
 
