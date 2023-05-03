@@ -1,0 +1,79 @@
+---
+- name: Install Docker and Docker Compose
+  hosts: localhost
+  become: true
+  vars:
+    docker_yum_repo_url: https://download.docker.com/linux/centos/docker-ce.repo
+    docker_compose_version: v2.17.0
+  tasks:
+    - name: Install packages required for Docker
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+          - python-pip
+          - python-setuptools
+      tags:
+        - packages
+
+    - name: Update packages
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Upgrade pip
+      command: python2.7 -m pip install --upgrade pip==20.3.4
+
+
+    - name: install docker-compose
+      command: python2.7 -m pip install docker-compose
+
+
+
+    - name: Install docker library
+      pip:
+        name: docker
+        state: present
+
+
+    - name: Add Docker YUM repository
+      get_url:
+        url: "{{ docker_yum_repo_url }}"
+        dest: /etc/yum.repos.d/docker-ce.repo
+      tags:
+        - docker
+
+    - name: Install Docker CE
+      yum:
+        name: docker-ce
+        state: present
+      tags:
+        - docker
+
+    - name: Download Docker Compose binary
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+        dest: /usr/local/bin/docker-compose
+        mode: 'a+x'
+      tags:
+        - docker-compose
+
+
+
+    - name: Add current user to the docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: true
+      tags:
+        - docker
+
+    - name: Start Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: true
+      tags:
+        - docker
+

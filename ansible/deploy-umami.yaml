@@ -1,0 +1,40 @@
+---
+- name: Deploy Umami with Docker Compose
+  hosts: localhost
+  become: true
+  vars:
+    project_name: umami
+    compose_file: umami-docker-compose.yaml
+  tasks:
+    - name: Copy docker-compose.yml file to /opt/umami
+      file:
+        path: /opt/{{ project_name }}
+        state: directory
+        mode: '0700'
+        owner: root
+        group: root
+
+    - name: Copy Docker Compose file to the server
+      copy:
+        src: "{{ compose_file }}"
+        dest: /opt/{{ project_name }}/{{ compose_file }}
+      tags:
+        - docker
+
+    - name: Start Umami with Docker Compose
+      docker_compose:
+        project_src: /opt/umami
+        project_name: "{{ project_name }}"
+        state: present
+        files: 
+          - "{{ compose_file }}"
+      tags:
+        - docker
+
+    - name: Allow port 8080 on firewalld
+      firewalld:
+        port: 8080/tcp
+        permanent: true
+        state: enabled
+
+
