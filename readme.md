@@ -19,23 +19,23 @@
 
 *install the dependency:*
 
-sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+`sudo yum install -y yum-utils device-mapper-persistent-data lvm2`
 
 *Add Docker repository to yum:*
 
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+`sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo`
 
 *Install Docker:*
 
-sudo yum install -y docker-ce
+`sudo yum install -y docker-ce`
 
 *Enable and Start Docker:*
 
-systemctl enable --now docker
+`systemctl enable --now docker`
 
 *check the service is running and healthy:*
 
-systemctl status docker
+`systemctl status docker`
 
 ![](media/e468d9527ba5b29f4b897a0d675a4938.png)
 
@@ -43,43 +43,43 @@ systemctl status docker
 
 *Download the latest version of Docker Compose:*
 
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+`sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose`
 
 *Make the Docker Compose binary executable:*
 
-sudo chmod +x /usr/local/bin/docker-compose
+`sudo chmod +x /usr/local/bin/docker-compose`
 
 *Verify the installation:*
 
-docker-compose --version
+`docker-compose --version`
 
 ![](media/501c5d788f6a32ef755971f368371b04.png)
 
-We can initialize the server and install docker and docker compose use ansible, we create playbook to do that under ansible/ initialize-server.yaml
+> We can initialize the server and install docker and docker compose use ansible, we create playbook to do that under ansible/ initialize-server.yaml
 
-First we establish password less between the ansible server and mention server
+> First we establish password less between the ansible server and mention server
 
-generate a new SSH key pair on the Ansible server by running the following command:
+> generate a new SSH key pair on the Ansible server by running the following command:
 
-ssh-keygen -t ed25519
+> `ssh-keygen -t ed25519`
 
-You can press enter for all of the prompts to accept the default options. This will generate a new ed25519 SSH key pair in the \~/.ssh/ directory of the current user.
+> You can press enter for all of the prompts to accept the default options. This will generate a new ed25519 SSH key pair in the \~/.ssh/ directory of the current user.
 
-Next, copy the public key to the other server using the following command, replacing \<username\> and \<server\> with the appropriate values:
+> Next, copy the public key to the other server using the following command, replacing \<username\> and \<server\> with the appropriate values:
 
-ssh-copy-id -i \~/.ssh/id_ed25519.pub \<username\>@\<server\>
+> `ssh-copy-id -i \~/.ssh/id_ed25519.pub \<username\>@\<server\>`
 
-You will be prompted for the password of the remote user account. Enter it and the public key will be added to the authorized_keys file on the remote server.
+> You will be prompted for the password of the remote user account. Enter it and the public key will be added to the authorized_keys file on the remote server.
 
-Test the connection by attempting to SSH into the remote server without a password:
+> Test the connection by attempting to SSH into the remote server without a password:
 
-ssh \<username\>@\<server\>
+> `ssh \<username\>@\<server\>`
 
-now we can modify the user and path of ssh key on ansible.cfg file and add the ip on the server on invitory file
+> now we can modify the user and path of ssh key on ansible.cfg file and add the ip on the server on invitory file
 
-finally run the following command:
+> finally run the following command:
 
-ansible-playbook ansible/initialize-server.yaml
+> `ansible-playbook ansible/initialize-server.yaml`
 
 **Deploying:**
 
