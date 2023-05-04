@@ -62,29 +62,29 @@ Because we will monitor one website, we are using centos 7 on VM with the follow
 ![](media/501c5d788f6a32ef755971f368371b04.png)
 
 >   We can use Ansible to initialize the server, install Docker and Docker Compose. To do this, we can create a playbook under 'ansible/initialize-server.yaml'
-
+>
 >   First, we need to establish a passwordless connection between the Ansible server and the mentioned server
-
+>
 >   To generate a new SSH key pair on the Ansible server, run the following command:
-
+>
 >   `ssh-keygen -t ed25519`
-
->   You can simply press enter for all the prompts, which will accept the default options. This will generate a new ed25519 SSH key pair in the \~/.ssh/ directory of the \> current user.
-
+>
+>   You can simply press enter for all the prompts, which will accept the default options. This will generate a new ed25519 SSH key pair in the ~/.ssh/ directory of > the \> current user.
+>
 >   Next, copy the public key to the other server using the following command, replacing and with the appropriate values:
-
+>
 >   `ssh-copy-id -i ~/.ssh/id_ed25519.pub <username>@<server>`
-
+>
 >   You will be prompted for the password of the remote user account. Enter it and the public key will be added to the authorized_keys file on the remote server.
-
+>
 >   Test the connection by attempting to SSH into the remote server without a password:
-
+>
 >   `ssh <username>@<server>`
-
+>
 >   now we can modify the user and path of ssh key on ansible.cfg file and add the ip on the server on invitory file
-
+>
 >   finally run the following command:
-
+>
 >   `ansible-playbook ansible/initialize-server.yaml`
 
 **Deploying:**
@@ -110,13 +110,13 @@ this will create two containers: one for the PostgreSQL database, with default c
 `firewall-cmd --list-all | grep 8080`
 
 >   *Note*:
-
+>
 >   To deploy the Docker Compose file, run the following Ansible playbook:
-
+>
 >   `ansible-playbook ansible/deploy-umami.yaml`
-
+>
 >   Make sure that the `umami-docker-compose.yaml` file is located in the same path as the playbook..
-
+>
 >   we can test the application now by type is the browser:
 
 <http://Ip-of-the-server:8080>
@@ -219,7 +219,7 @@ make suer that the file has executable permission
 
 To run this script every 6 hours, you can use a cron job. Open the crontab file with crontab -e and add the following line to run the script every 6 hours:
 
-`0 \*/6 \* \* \* /path/to/backup.sh`
+`0 */6 * * * /path/to/backup.sh`
 
 **Monitoring the containers:**
 
@@ -229,7 +229,7 @@ To begin, we need to add the cAdvisor service to our umami-docker-compose.yaml f
 
 Run the following to update the stack:
 
-Docker-compose -f umami-docker-compose.yaml up -d
+`docker-compose -f umami-docker-compose.yaml up -d`
 
 Here we are mapping port 4040 on the host with port 8080 on cAdviso container.
 
