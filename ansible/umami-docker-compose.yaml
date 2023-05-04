@@ -3,6 +3,7 @@ version: '3'
 services:
   umami:
     image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: umami
     ports:
       - "8080:3000"
     environment:
@@ -14,6 +15,7 @@ services:
     restart: always
   db:
     image: postgres:15-alpine
+    container_name: postgres
     environment:
       POSTGRES_DB: umami
       POSTGRES_USER: umami
@@ -21,6 +23,18 @@ services:
     volumes:
       - umami-data:/var/lib/postgresql/data
     restart: always
+
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    restart: always
+    ports:
+      - "4040:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
 volumes:
   umami-data:
     name: umami-data

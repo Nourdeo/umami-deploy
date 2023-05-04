@@ -1,0 +1,13 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+scrape_configs:
+  - job_name: 'umami-advisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ip-of-the-umami-server:4040']
+
+rule_files:
+  - prometheus-alert-rules.yaml
+
+

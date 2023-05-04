@@ -1,0 +1,30 @@
+groups:
+  - name: umami-cadvisor.rules
+    rules:
+      - alert: HighCpuUsage
+        expr: sum(rate(container_cpu_usage_seconds_total{name=~"umami|postgres|cadvisor"}[5m])) by (name) > 1
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: High CPU usage on {{ $labels.name }}
+          description: '{{ $labels.name }} is using {{ humanize $value }} of CPU resources.'
+
+      - alert: HighMemoryUsage
+        expr: sum(container_memory_usage_bytes{name=~"umami|postgres|cadvisor"}) by (name) / sum(machine_memory_bytes) > 0.8
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: High Memory usage on {{ $labels.name }}
+          description: '{{ $labels.name }} is using {{ humanize $value }} of memory resources.'
+
+      - alert: ContainerDown
+        expr: absent(container_last_seen{name="umami"}) OR absent(container_last_seen{name="postgres"}) OR absent(container_last_seen{name="cadvisor"})
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: Container {{ $labels.name }} is down
+          description: '{{ $labels.name }} is down.'
+
