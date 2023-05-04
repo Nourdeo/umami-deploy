@@ -160,8 +160,38 @@ place the following code in the \<head\>...\</head\> section of your HTML
 `sudo vi /etc/nginx/conf.d/umami.conf`
 
 *Add the following:*
+<pre>
+server {
+    listen 80;
+    server_name umami.kalvad.com;
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    } }
+  </pre>
+
 
 If we have a list of whitelisted IP addresses that should have access to the server, it is recommended to restrict access by adding the following configuration to Nginx:
+
+<pre>
+server {
+    listen 80;
+    server_name umami.kalvad.com;
+
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        allow 192.0.2.1; # replace with the whitelist IP
+        deny all;
+    }
+}
+</pre>
+
 
 *Test the Nginx configuration:*
 
@@ -323,6 +353,8 @@ After completing all the previous steps, the next step is to create an ingress r
 -   Create a certificate that references the issuer and the domain name for which the SSL certificate should be generated. Once the SSL certificate has been generated, we can proceed with creating the ingress rule that will route traffic to the Umami application. Here are the steps to follow:
 -   Create an ingress resource that defines the routing rules for incoming traffic.
 -   Verify that the ingress rule has been created successfully and that the Umami application can be accessed using the specified domain name.
+
+
 
 ![](media/a1fb77d6d01419fc9ad2bfd333125618.png)
 
